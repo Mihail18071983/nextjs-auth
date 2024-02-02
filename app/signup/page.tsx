@@ -44,7 +44,11 @@ const Signup = () => {
         console.log("user added successfully");
         setError("");
         // router.push("/dashboard");
-        await signIn("credentials", {callbackUrl:"/dashboard"})
+        await signIn("credentials", {
+          email: user.email,
+          password: user.password,
+          callbackUrl: "/dashboard",
+        });
       }
     } catch (error) {
       console.log(error);
@@ -142,11 +146,12 @@ const Signup = () => {
                   <div className="mt-3">or</div>
                   <div className="border-b border-gray-800 py-2 w-full px-6" />
                 </div>
-
-                <div onClick={()=>signIn("google")} className="rounded px-6 py-2 shadow cursor-pointer bg-gray-50 grid place-items-center mx-auto mb-8">
+                <div
+                  onClick={() => signIn("google")}
+                  className="rounded px-6 py-2 shadow cursor-pointer bg-gray-50 grid place-items-center mx-auto mb-8"
+                >
                   <Image src={google} alt="bg" width={100} height={100} />
                 </div>{" "}
-
                 <div className="text-lg text-slate-900 font-medium">
                   <span>Have an account?</span>
                   <a href="/" className="text-[#5D7DF3] pl-3 hover:underline">
