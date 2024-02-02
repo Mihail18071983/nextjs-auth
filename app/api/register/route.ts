@@ -27,13 +27,19 @@ export async function POST(request: NextRequest) {
       password: hashedPassword,
     });
 
-    const savedUser = await newUser.save();
+    // const savedUser = await newUser.save();
+     await newUser.save();
 
-    return NextResponse.json({
-      message: "User created successfully",
-      success: true,
-      savedUser,
-    });
+    const dashboardUrl = new URL('/dashboard', request.url);
+    console.log(dashboardUrl);
+
+    // return NextResponse.json({
+    //   message: "User created successfully",
+    //   success: true,
+    //   savedUser,
+    // });
+    return NextResponse.redirect(dashboardUrl.href);
+    
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

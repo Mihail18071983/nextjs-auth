@@ -10,10 +10,14 @@ export async function middleware(req: NextRequest) {
 
   const publicPaths = path === "/" || path === "/signup";
 
+  console.log(`Middleware: Path: ${path}, Token: ${token ? 'Exists' : 'Not Found'}`);
+
   if (publicPaths && token) {
+    console.log('Redirecting to dashboard');
     return NextResponse.redirect(new URL("/dashboard", req.nextUrl));
   }
   if (!publicPaths && !token) {
+     console.log('Redirecting to home');
     return NextResponse.redirect(new URL("/", req.nextUrl));
   }
 }

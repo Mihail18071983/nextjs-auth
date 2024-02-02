@@ -43,7 +43,8 @@ const Signup = () => {
       if (res.status == 200 || res.status == 201) {
         console.log("user added successfully");
         setError("");
-        router.push("/");
+        // router.push("/dashboard");
+        await signIn("credentials", {callbackUrl:"/dashboard"})
       }
     } catch (error) {
       console.log(error);

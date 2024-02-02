@@ -9,7 +9,10 @@ export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "credentials",
-      credentials: {},
+      credentials: {
+        email: { label: "email", type: "email", required: true },
+        password: { label: "password", type: "password", required: true },
+      },
       async authorize(credentials) {
         const { email, password } = credentials as {
           email: string;
@@ -46,6 +49,20 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async signIn({ user, account }: { user: any; account: any }) {
+      console.log("Inside signIn callback");
+      console.log("User:", user);
+      console.log("Account:", account);
+      if (account?.provider === "credentials") {
+        try {
+          await connect();
+          const userExists = await User.findOne({ email: user.email });
+          if (!userExists) {
+            return "/dashboard"; // Redirect to the dashboard after registration
+          }
+        } catch (error) {
+          console.error("Error checking user existence:", error);
+        }
+      }
       if (account.provider === "google") {
         try {
           const { name, email } = user;
@@ -60,10 +77,9 @@ export const authOptions: NextAuthOptions = {
           });
           const res = await newUser.save();
           if (res.status === 200 || res.status === 201) {
-            console.log(res)
+            console.log(res);
             return user;
           }
-
         } catch (err) {
           console.log(err);
         }
